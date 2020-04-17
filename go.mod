@@ -1,4 +1,4 @@
-module github.com/carousell/login
+module github.com/login
 
 go 1.13
 
