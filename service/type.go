@@ -1,12 +1,12 @@
 package service
 
-import "github.com/gin-gonic/gin"
-
 // Endpoint general endpoint description
 type Endpoint struct {
 	Method   string
 	URL      string
-	Handler func(c *gin.Context)
+	Handler  interface{}
+	Request  interface{}
+	Response interface{}
 }
 
 // Endpoints endpoint collection
