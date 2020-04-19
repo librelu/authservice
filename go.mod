@@ -4,6 +4,7 @@ go 1.13
 
 require (
 	github.com/bugsnag/bugsnag-go v1.5.3
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gin-gonic/gin v1.6.2
 	github.com/gofrs/uuid v3.2.0+incompatible
 	github.com/google/uuid v1.1.1

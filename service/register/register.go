@@ -4,14 +4,16 @@ import (
 	"regexp"
 
 	"github.com/authsvc/data/dao"
+	"github.com/authsvc/thirdparty/smtp"
 	"github.com/authsvc/utils/endpoints"
+	"github.com/authsvc/utils/jwt"
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
 	"golang.org/x/crypto/bcrypt"
 )
 
 // Handler user register process
-func Handler(dbClient dao.Handler) (jsonHandler endpoints.JSONHandler) {
+func Handler(dbHandler dao.Handler, smtpHandler smtp.Handler) (jsonHandler endpoints.JSONHandler) {
 	return func(c *gin.Context, req interface{}) (resp interface{}, err error) {
 		r, ok := req.(*Request)
 		if !ok {
@@ -33,16 +35,28 @@ func Handler(dbClient dao.Handler) (jsonHandler endpoints.JSONHandler) {
 			return nil, errors.Errorf("Username is require in request body")
 		}
 
-		cryptHash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+		passwordHash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 		if err != nil {
 			return nil, errors.Errorf("crypt password failed, error: %s", err)
 		}
 
-		if ok, err := dbClient.CreateUser(username, email, cryptHash); !ok || err != nil {
+		if ok, err := dbHandler.CreateUser(username, email, passwordHash); !ok || err != nil {
 			return nil, errors.Errorf("create user failed, error: %s", err)
 		}
 
-		return nil, nil
+		token, err := jwt.ClaimJWTByUserInfo(username, email, passwordHash)
+		if err != nil {
+			return nil, errors.Errorf("can't get token")
+		}
+
+		err = smtpHandler.SendWelcomeEmail(email, username, "adsfadsf")
+		if err != nil {
+			return nil, errors.Errorf("failed to send welcome email: %s", err)
+		}
+
+		return Response{
+			Token: token,
+		}, nil
 	}
 }
 

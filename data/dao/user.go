@@ -16,7 +16,7 @@ func (d *dao) CreateUser(user, email string, password []byte) (output bool, err 
 	uuid := uuid.New().String()
 	timeNow := time.Now()
 	// find user or create a new row
-	db := d.postgres.DB.Debug().Where(
+	db := d.postgres.DB.Where(
 		models.User{
 			Username: sql.NullString{
 				String: user,
@@ -36,7 +36,7 @@ func (d *dao) CreateUser(user, email string, password []byte) (output bool, err 
 	}
 
 	if db.RecordNotFound() {
-		if err := d.postgres.DB.Debug().Create(models.User{
+		if err := d.postgres.DB.Create(models.User{
 			UUID: sql.NullString{
 				String: uuid,
 				Valid:  true,

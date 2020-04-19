@@ -5,3 +5,8 @@ db:
   database: "postgres"
   user: "postgres"
   sslmode: "disable"
+smtp:
+  username: "chucobo5219@gmail.com"
+  password: "bhugudznxheolonw"
+  host: "smtp.gmail.com"
+  port: "587"

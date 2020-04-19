@@ -17,12 +17,14 @@ func NewJSONEndpoint(engine *gin.Engine, method string, url string, req interfac
 		}
 		r, err := handler(c, req)
 		if r != nil {
-			result, err := json.Marshal(r)
+			resultString, err := json.Marshal(r)
 			if err != nil {
 				c.JSON(http.StatusBadGateway, gin.H{"error": err.Error()})
 				panic(fmt.Sprintf("%+v\n", err))
 			}
-			c.JSON(http.StatusAccepted, result)
+			resp := make(map[string]interface{})
+			json.Unmarshal(resultString, &resp)
+			c.JSON(http.StatusAccepted, resp)
 			return
 		} else if err != nil {
 			c.JSON(http.StatusBadGateway, gin.H{"error": err.Error()})

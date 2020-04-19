@@ -11,6 +11,7 @@ import (
 	"github.com/authsvc/service/healthcheck"
 	"github.com/authsvc/service/login"
 	"github.com/authsvc/service/register"
+	"github.com/authsvc/thirdparty/smtp"
 	endpointutils "github.com/authsvc/utils/endpoints"
 	"github.com/gin-gonic/gin"
 )
@@ -43,6 +44,14 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	// Init SMTP
+	smtpHandler := smtp.NewSMTPClient(
+		c.GetString("smtp.identity", ""),
+		c.GetString("smtp.username", ""),
+		c.GetString("smtp.password", ""),
+		c.GetString("smtp.host", ""),
+		c.GetString("smtp.port", ""),
+	)
 
 	// Init endpotins
 	endpoints := service.Endpoints{
@@ -59,7 +68,7 @@ func main() {
 		service.Endpoint{
 			Method:  http.MethodPost,
 			URL:     "/register",
-			Handler: register.Handler(daoHandler),
+			Handler: register.Handler(daoHandler, smtpHandler),
 			Request: new(register.Request),
 		},
 	}
