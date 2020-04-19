@@ -8,8 +8,19 @@ import (
 	"github.com/google/uuid"
 )
 
-func (d *dao) GetUser(input *models.User) (output *models.User, err error) {
-	return nil, nil
+func (d *dao) GetUserByUsername(username string) (output *models.User, err error) {
+	user := &models.User{}
+	if db := d.postgres.DB.Find(user, models.User{
+		Username: sql.NullString{
+			String: username,
+			Valid:  true,
+		},
+	}); db.Error != nil {
+		if !db.RecordNotFound() {
+			return nil, db.Error
+		}
+	}
+	return user, nil
 }
 
 func (d *dao) CreateUser(user, email string, password []byte) (output bool, err error) {

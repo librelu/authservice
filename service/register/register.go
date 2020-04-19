@@ -44,12 +44,27 @@ func Handler(dbHandler dao.Handler, smtpHandler smtp.Handler) (jsonHandler endpo
 			return nil, errors.Errorf("create user failed, error: %s", err)
 		}
 
+		// Give Coupon to User
+		coupon, err := dbHandler.GetCouponByName("WelcomeCoupon")
+		if err != nil {
+			return nil, errors.Errorf("can't get coupon: %s", err)
+		}
+
+		user, err := dbHandler.GetUserByUsername(username)
+		if err != nil {
+			return nil, errors.Errorf("can't get user: %s", err)
+		}
+
+		if err := dbHandler.GiveCouponToUser(coupon, user); err != nil {
+			return nil, errors.Errorf("can't give coupon: %s", err)
+		}
+
 		token, err := jwt.ClaimJWTByUserInfo(username, email, passwordHash)
 		if err != nil {
 			return nil, errors.Errorf("can't get token")
 		}
 
-		err = smtpHandler.SendWelcomeEmail(email, username, "adsfadsf")
+		err = smtpHandler.SendWelcomeEmail(email, username, coupon.Name.String)
 		if err != nil {
 			return nil, errors.Errorf("failed to send welcome email: %s", err)
 		}
