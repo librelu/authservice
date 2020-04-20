@@ -1,12 +1,7 @@
 db:
   host: ec2-50-17-90-177.compute-1.amazonaws.com
   port: 5432
-  password: "postgres"
-  database: "ibfrqooufsmidj"
-  user: "b6155fbe9644689513853fdda7d91564fb264516606520439b67afb967ff4e9c"
-  sslmode: "preferred"
-smtp:
-  username: "chucobo5219@gmail.com"
-  password: "bhugudznxheolonw"
-  host: "smtp.gmail.com"
-  port: "587"
+  user: "ibfrqooufsmidj"
+  password: "b6155fbe9644689513853fdda7d91564fb264516606520439b67afb967ff4e9c"
+  database: "dfotqnrsmfhq1d"
+  sslmode: "require"
