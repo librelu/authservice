@@ -9,3 +9,4 @@ RUN  go mod tidy
 RUN go test ./...
 RUN go install github.com/authsvc
 EXPOSE 8080
+CMD [authsvc]
