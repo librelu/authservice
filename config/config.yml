@@ -5,3 +5,8 @@ db:
   password: "b6155fbe9644689513853fdda7d91564fb264516606520439b67afb967ff4e9c"
   database: "dfotqnrsmfhq1d"
   sslmode: "require"
+smtp:
+  username: "chucobo5219@gmail.com"
+  password: "bhugudznxheolonw"
+  host: "smtp.gmail.com"
+  port: "587"
