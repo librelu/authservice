@@ -44,10 +44,10 @@ func main() {
 
 	// Init Google Oauth
 	goauthClient := googleoauth.NewClient(
-		c.GetString("google_oauth.client_id", ""),
-		c.GetString("google_oauth.client_secret", ""),
-		c.GetString("google_oauth.redirect_url", ""),
-		c.GetStringList("google_oauth.scopes", nil),
+		c.GetString("googleoauth.clientid", ""),
+		c.GetString("googleoauth.clientsecret", ""),
+		c.GetString("googleoauth.redirecturl", ""),
+		c.GetStringList("googleoauth.scopes", nil),
 	)
 
 	// Init dao
