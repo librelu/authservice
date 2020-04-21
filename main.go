@@ -91,7 +91,7 @@ func main() {
 			Method:  http.MethodGet,
 			URL:     "/get_googleoauth_url",
 			Handler: goauthHandler.GetURLHandler(goauthClient),
-		}
+		},
 	}
 	r := gin.Default()
 	for _, e := range endpoints {

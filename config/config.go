@@ -19,17 +19,15 @@ func NewConfig() (h Handler, err error) {
 }
 
 func (c config) GetString(key, fallback string) string {
-	if c.config.GetString(key) == "" {
+	if c.config.GetString(key) != "" {
 		return c.config.GetString(key)
-	} else {
-		return fallback
 	}
+	return fallback
 }
 
 func (c config) GetStringList(key string, fallback []string) []string {
 	if len(c.config.GetStringSlice(key)) > 0 {
 		return c.config.GetStringSlice(key)
-	} else {
-		return fallback
 	}
+	return fallback
 }
