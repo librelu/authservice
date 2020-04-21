@@ -81,3 +81,10 @@ func Handler(googleoauth googleoauth.Handler, daoHandler dao.Handler, smtpHandle
 		c.JSON(http.StatusAccepted, gin.H{"token": token})
 	}
 }
+
+// GetURLHandler get oauth url
+func GetURLHandler(googleoauth googleoauth.Handler) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.JSON(http.StatusAccepted, gin.H{"url": googleoauth.GetOauthURL()})
+	}
+}
