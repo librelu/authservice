@@ -8,9 +8,11 @@ import (
 	"github.com/authsvc/data/dao"
 	"github.com/authsvc/data/postgres"
 	"github.com/authsvc/service"
+	goauthHandler "github.com/authsvc/service/googleoauth"
 	"github.com/authsvc/service/healthcheck"
 	"github.com/authsvc/service/login"
 	"github.com/authsvc/service/register"
+	"github.com/authsvc/thirdparty/googleoauth"
 	"github.com/authsvc/thirdparty/smtp"
 	endpointutils "github.com/authsvc/utils/endpoints"
 	"github.com/gin-gonic/gin"
@@ -39,6 +41,15 @@ func main() {
 		panic(err)
 	}
 	defer postgresClient.DB.Close()
+
+	// Init Google Oauth
+	goauthClient := googleoauth.NewClient(
+		c.GetString("google_oauth.client_id", ""),
+		c.GetString("google_oauth.client_secret", ""),
+		c.GetString("google_oauth.redirect_url", ""),
+		c.GetStringList("google_oauth.scopes", nil),
+	)
+
 	// Init dao
 	daoHandler, err := dao.NewHandler(postgresClient)
 	if err != nil {
@@ -70,6 +81,11 @@ func main() {
 			URL:     "/register",
 			Handler: register.Handler(daoHandler, smtpHandler),
 			Request: new(register.Request),
+		},
+		service.Endpoint{
+			Method:  http.MethodGet,
+			URL:     "/googleoauth",
+			Handler: goauthHandler.Handler(goauthClient, daoHandler, smtpHandler),
 		},
 	}
 	r := gin.Default()

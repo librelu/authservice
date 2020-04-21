@@ -13,7 +13,7 @@ import (
 )
 
 // Handler user register process
-func Handler(dbHandler dao.Handler, smtpHandler smtp.Handler) (jsonHandler endpoints.JSONHandler) {
+func Handler(daoHandler dao.Handler, smtpHandler smtp.Handler) (jsonHandler endpoints.JSONHandler) {
 	return func(c *gin.Context, req interface{}) (resp interface{}, err error) {
 		r, ok := req.(*Request)
 		if !ok {
@@ -40,22 +40,32 @@ func Handler(dbHandler dao.Handler, smtpHandler smtp.Handler) (jsonHandler endpo
 			return nil, errors.Errorf("crypt password failed, error: %s", err)
 		}
 
-		if ok, err := dbHandler.CreateUser(username, email, passwordHash); !ok || err != nil {
+		if user, _ := daoHandler.GetUserByUsername(username); user != nil {
+			token, err := jwt.ClaimJWTByUserInfo(username, email, passwordHash)
+			if err != nil {
+				return nil, err
+			}
+			return Response{
+				Token: token,
+			}, nil
+		}
+
+		if ok, err := daoHandler.CreateUser(username, email, passwordHash); !ok || err != nil {
 			return nil, errors.Errorf("create user failed, error: %s", err)
 		}
 
 		// Give Coupon to User
-		coupon, err := dbHandler.GetCouponByName("WelcomeCoupon")
+		coupon, err := daoHandler.GetCouponByName("WelcomeCoupon")
 		if err != nil {
 			return nil, errors.Errorf("can't get coupon: %s", err)
 		}
 
-		user, err := dbHandler.GetUserByUsername(username)
+		user, err := daoHandler.GetUserByUsername(username)
 		if err != nil {
 			return nil, errors.Errorf("can't get user: %s", err)
 		}
 
-		if err := dbHandler.GiveCouponToUser(coupon, user); err != nil {
+		if err := daoHandler.GiveCouponToUser(coupon, user); err != nil {
 			return nil, errors.Errorf("can't give coupon: %s", err)
 		}
 

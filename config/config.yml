@@ -10,3 +10,10 @@ smtp:
   password: "bhugudznxheolonw"
   host: "smtp.gmail.com"
   port: "587"
+googleOauth:
+  clientID: "253768931865-or5h985g6ftkljaeqd8obveq2eod4a2i.apps.googleusercontent.com"
+  clientSecret: "8xXEuzZLcpNWrGSahxwjLUo1" 
+  redirectURL: "https://amazingtalker.herokuapp.com/googleoauth"
+  scopes:
+    - "https://www.googleapis.com/auth/userinfo.email"
+    - "https://www.googleapis.com/auth/userinfo.profile"
