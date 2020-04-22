@@ -23,7 +23,7 @@ func Handler(googleoauth googleoauth.Handler, daoHandler dao.Handler, smtpHandle
 
 		userinfo, err := googleoauth.GetUserProfileByToken(c, code)
 		if err != nil {
-			c.JSON(http.StatusBadGateway, gin.H{"error": errors.Errorf(err.Error())})
+			c.JSON(http.StatusBadGateway, gin.H{"error": errors.Errorf(err.Error()).Error()})
 			return
 		}
 
@@ -31,51 +31,51 @@ func Handler(googleoauth googleoauth.Handler, daoHandler dao.Handler, smtpHandle
 		email := userinfo.Email
 		passwordHash, err := bcrypt.GenerateFromPassword([]byte(code), bcrypt.DefaultCost)
 		if err != nil {
-			c.JSON(http.StatusBadGateway, gin.H{"error": errors.Errorf(err.Error())})
+			c.JSON(http.StatusBadGateway, gin.H{"error": errors.Errorf(err.Error()).Error()})
 			return
 		}
 
 		if user, _ := daoHandler.GetUserByEmail(email); user != nil {
 			token, err := jwt.ClaimJWTByUserInfo(username, email, passwordHash)
 			if err != nil {
-				c.JSON(http.StatusBadGateway, gin.H{"error": errors.Errorf(err.Error())})
+				c.JSON(http.StatusBadGateway, gin.H{"error": errors.Errorf(err.Error()).Error()})
 			}
 			c.JSON(http.StatusAccepted, gin.H{"token": token})
 			return
 		}
 
 		if ok, err := daoHandler.CreateUser(username, email, passwordHash); !ok || err != nil {
-			c.JSON(http.StatusBadGateway, gin.H{"error": errors.Errorf(err.Error())})
+			c.JSON(http.StatusBadGateway, gin.H{"error": errors.Errorf(err.Error()).Error()})
 			return
 		}
 
 		token, err := jwt.ClaimJWTByUserInfo(username, email, passwordHash)
 		if err != nil {
-			c.JSON(http.StatusBadGateway, gin.H{"error": errors.Errorf(err.Error())})
+			c.JSON(http.StatusBadGateway, gin.H{"error": errors.Errorf(err.Error()).Error()})
 			return
 		}
 
 		// Give Coupon to User
 		coupon, err := daoHandler.GetCouponByName("WelcomeCoupon")
 		if err != nil {
-			c.JSON(http.StatusBadGateway, gin.H{"error": errors.Errorf(err.Error())})
+			c.JSON(http.StatusBadGateway, gin.H{"error": errors.Errorf(err.Error()).Error()})
 			return
 		}
 
 		user, err := daoHandler.GetUserByEmail(email)
 		if err != nil {
-			c.JSON(http.StatusBadGateway, gin.H{"error": errors.Errorf(err.Error())})
+			c.JSON(http.StatusBadGateway, gin.H{"error": errors.Errorf(err.Error()).Error()})
 			return
 		}
 
 		if err := daoHandler.GiveCouponToUser(coupon, user); err != nil {
-			c.JSON(http.StatusBadGateway, gin.H{"error": errors.Errorf(err.Error())})
+			c.JSON(http.StatusBadGateway, gin.H{"error": errors.Errorf(err.Error()).Error()})
 			return
 		}
 
 		err = smtpHandler.SendWelcomeEmail(email, username, coupon.Name.String)
 		if err != nil {
-			c.JSON(http.StatusBadGateway, gin.H{"error": err.Error()})
+			c.JSON(http.StatusBadGateway, gin.H{"error": errors.Errorf(err.Error()).Error()})
 			return
 		}
 
