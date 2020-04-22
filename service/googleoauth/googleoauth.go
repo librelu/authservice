@@ -1,7 +1,6 @@
 package googleoauth
 
 import (
-	"log"
 	"net/http"
 	"net/url"
 
@@ -111,7 +110,6 @@ func GetURLHandler(googleoauth googleoauth.Handler) gin.HandlerFunc {
 }
 
 func responseError(c *gin.Context, err error) {
-	log.Println(err)
 	c.JSON(http.StatusBadGateway, gin.H{"error": err.Error()})
-	return
+	panic(err)
 }

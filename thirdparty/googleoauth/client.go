@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"io/ioutil"
-	"log"
 
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
@@ -35,8 +34,6 @@ func (c *client) GetUserProfileByCode(ctx context.Context, code string) (userinf
 		return nil, err
 	}
 
-	log.Println("debug code:", code)
-	log.Println("debug tok:", tok)
 	client := c.config.Client(ctx, tok)
 	resp, err := client.Get(authTokenURL + tok.AccessToken)
 	if err != nil {
@@ -48,7 +45,6 @@ func (c *client) GetUserProfileByCode(ctx context.Context, code string) (userinf
 	if err != nil {
 		return nil, err
 	}
-	log.Println("debug resp:", string(v))
 
 	err = json.Unmarshal(v, userinfo)
 	if err != nil {
