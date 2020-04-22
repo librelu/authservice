@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 
+	"github.com/pkg/errors"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 )
@@ -28,10 +29,14 @@ func (c *client) GetOauthURL() string {
 	return c.config.AuthCodeURL("state")
 }
 
-func (c *client) GetUserProfileByToken(ctx context.Context, token string) (userinfo *UserInfo, err error) {
-	tok, err := c.config.Exchange(ctx, token)
+func (c *client) GetUserProfileByToken(ctx context.Context, code string) (userinfo *UserInfo, err error) {
+	tok, err := c.config.Exchange(ctx, code)
 	if err != nil {
 		return nil, err
+	}
+
+	if tok == nil {
+		return nil, errors.Errorf("no token found")
 	}
 
 	client := c.config.Client(ctx, tok)
