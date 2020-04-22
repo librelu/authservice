@@ -102,16 +102,13 @@ func Test_validateEmail(t *testing.T) {
 	}
 	for _, tt := range testCases {
 		t.Run(tt.name, func(t *testing.T) {
-			gotResult, err := validateEmail(tt.args.email)
+			err := validateEmail(tt.args.email)
 			if tt.customErrorMatcher != nil {
 				if !tt.customErrorMatcher(err, tt.expectedErr) {
 					t.Errorf("validateEmail() error = %v, expectedErr %v", err, tt.expectedErr)
 				}
 			} else if !reflect.DeepEqual(err, tt.expectedErr) {
 				t.Errorf("validateEmail() error = %v, expectedErr %v", err, tt.expectedErr)
-			}
-			if gotResult != tt.wantResult {
-				t.Errorf("validateEmail() = %v, want %v", gotResult, tt.wantResult)
 			}
 		})
 	}
@@ -150,16 +147,13 @@ func Test_validatePassword(t *testing.T) {
 	}
 	for _, tt := range testCases {
 		t.Run(tt.name, func(t *testing.T) {
-			gotResult, err := validatePassword(tt.args.password)
+			err := validatePassword(tt.args.password)
 			if tt.customErrorMatcher != nil {
 				if !tt.customErrorMatcher(err, tt.expectedErr) {
 					t.Errorf("validatePassword() error = %v, expectedErr %v", err, tt.expectedErr)
 				}
 			} else if !reflect.DeepEqual(err, tt.expectedErr) {
 				t.Errorf("validatePassword() error = %v, expectedErr %v", err, tt.expectedErr)
-			}
-			if gotResult != tt.wantResult {
-				t.Errorf("validatePassword() = %v, want %v", gotResult, tt.wantResult)
 			}
 		})
 	}
