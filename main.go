@@ -8,10 +8,12 @@ import (
 	"github.com/authsvc/data/dao"
 	"github.com/authsvc/data/postgres"
 	"github.com/authsvc/service"
+	foauthHandler "github.com/authsvc/service/facebookoauth"
 	goauthHandler "github.com/authsvc/service/googleoauth"
 	"github.com/authsvc/service/healthcheck"
 	"github.com/authsvc/service/login"
 	"github.com/authsvc/service/register"
+	"github.com/authsvc/thirdparty/facebookoauth"
 	"github.com/authsvc/thirdparty/googleoauth"
 	"github.com/authsvc/thirdparty/smtp"
 	endpointutils "github.com/authsvc/utils/endpoints"
@@ -48,6 +50,14 @@ func main() {
 		c.GetString("googleoauth.clientsecret", ""),
 		c.GetString("googleoauth.redirecturl", ""),
 		c.GetStringList("googleoauth.scopes", nil),
+	)
+
+	// Init Facebook Oauth
+	foauthClient := facebookoauth.NewClient(
+		c.GetString("facebookoauth.clientid", ""),
+		c.GetString("facebookoauth.clientsecret", ""),
+		c.GetString("facebookoauth.redirecturl", ""),
+		nil,
 	)
 
 	// Init dao
@@ -91,6 +101,16 @@ func main() {
 			Method:  http.MethodGet,
 			URL:     "/get_googleoauth_url",
 			Handler: goauthHandler.GetURLHandler(goauthClient),
+		},
+		service.Endpoint{
+			Method:  http.MethodGet,
+			URL:     "/facebookoauth",
+			Handler: foauthHandler.Handler(foauthClient, daoHandler, smtpHandler),
+		},
+		service.Endpoint{
+			Method:  http.MethodGet,
+			URL:     "/get_facebookoauth_url",
+			Handler: foauthHandler.GetURLHandler(foauthClient),
 		},
 	}
 	r := gin.Default()

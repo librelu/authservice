@@ -17,3 +17,7 @@ googleoauth:
   scopes:
     - "https://www.googleapis.com/auth/userinfo.email"
     - "https://www.googleapis.com/auth/userinfo.profile"
+facebookoauth:
+  clientid: "3043148599098072"
+  clientsecret: "88dd43ba10065f40370ad91c601750d0" 
+  redirecturl: "https://amazingtalker.herokuapp.com/facebookoauth"
