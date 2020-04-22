@@ -46,6 +46,7 @@ func (c *client) GetUserProfileByCode(ctx context.Context, code string) (userinf
 		return nil, err
 	}
 
+	userinfo = new(UserInfo)
 	err = json.Unmarshal(v, userinfo)
 	if err != nil {
 		return nil, err
