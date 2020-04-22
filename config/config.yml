@@ -23,3 +23,4 @@ facebookoauth:
   redirecturl: "https://amazingtalker.herokuapp.com/facebookoauth"
   scopes:
     - "public_profile"
+    - "email"
