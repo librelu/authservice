@@ -21,12 +21,12 @@ func Handler(daoHandler dao.Handler, smtpHandler smtp.Handler) (jsonHandler endp
 		}
 
 		password := r.Password
-		if ok, err := validatePassword(password); !ok || err != nil {
+		if err := validatePassword(password); !ok || err != nil {
 			return nil, err
 		}
 
 		email := r.Email
-		if ok, err := validateEmail(email); !ok || err != nil {
+		if err := validateEmail(email); !ok || err != nil {
 			return nil, err
 		}
 
@@ -85,17 +85,17 @@ func Handler(daoHandler dao.Handler, smtpHandler smtp.Handler) (jsonHandler endp
 	}
 }
 
-func validateEmail(email string) (result bool, err error) {
+func validateEmail(email string) (err error) {
 	re := regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
 	if !re.MatchString(email) {
-		return false, errors.Errorf("incorrect email ex: 1234@domain.com current input:%s", email)
+		return errors.Errorf("incorrect email ex: 1234@domain.com current input:%s", email)
 	}
-	return true, nil
+	return nil
 }
 
-func validatePassword(password string) (result bool, err error) {
+func validatePassword(password string) (err error) {
 	if len(password) < 8 {
-		return false, errors.Errorf("the password should contains at lease 8 charactor")
+		return errors.Errorf("the password should contains at lease 8 charactor")
 	}
-	return true, nil
+	return nil
 }

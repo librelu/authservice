@@ -19,5 +19,5 @@ googleoauth:
     - "https://www.googleapis.com/auth/userinfo.profile"
 facebookoauth:
   clientid: "3043148599098072"
-  clientsecret: "88dd43ba10065f40370ad91c601750d0" 
+  clientsecret: "e1c7c45a0564e9fed4e9422090bd4579" 
   redirecturl: "https://amazingtalker.herokuapp.com/facebookoauth"
