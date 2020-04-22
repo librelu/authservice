@@ -40,7 +40,7 @@ func Handler(facebookoauth facebookoauth.Handler, daoHandler dao.Handler, smtpHa
 		username := userinfo.ID
 		email := userinfo.Email
 		if username == "" || email == "" {
-			responseError(errors.Errorf("invalid email and username"))
+			responseError(c, errors.Errorf("invalid email and username"))
 			return
 		}
 

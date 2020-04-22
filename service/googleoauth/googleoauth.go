@@ -40,7 +40,7 @@ func Handler(googleoauth googleoauth.Handler, daoHandler dao.Handler, smtpHandle
 		username := userinfo.ID
 		email := userinfo.Email
 		if username == "" || email == "" {
-			responseError(errors.Errorf("invalid email and username"))
+			responseError(c, errors.Errorf("invalid email and username"))
 			return
 		}
 
