@@ -21,12 +21,12 @@ func Handler(daoHandler dao.Handler, smtpHandler smtp.Handler) (jsonHandler endp
 		}
 
 		password := r.Password
-		if err := validatePassword(password); !ok || err != nil {
+		if err := validatePassword(password); err != nil {
 			return nil, err
 		}
 
 		email := r.Email
-		if err := validateEmail(email); !ok || err != nil {
+		if err := validateEmail(email); err != nil {
 			return nil, err
 		}
 
