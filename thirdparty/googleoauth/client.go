@@ -29,7 +29,7 @@ func (c *client) GetOauthURL() string {
 	return c.config.AuthCodeURL("state")
 }
 
-func (c *client) GetUserProfileByToken(ctx context.Context, code string) (userinfo *UserInfo, err error) {
+func (c *client) GetUserProfileByCode(ctx context.Context, code string) (userinfo *UserInfo, err error) {
 	tok, err := c.config.Exchange(ctx, code)
 	if err != nil {
 		return nil, err

@@ -11,7 +11,7 @@ const authTokenURL = "https://www.googleapis.com/oauth2/v2/userinfo?access_token
 // Handler Oauth2 handler
 type Handler interface {
 	GetOauthURL() string
-	GetUserProfileByToken(ctx context.Context, token string) (userinfo *UserInfo, err error)
+	GetUserProfileByCode(ctx context.Context, token string) (userinfo *UserInfo, err error)
 }
 
 type client struct {
