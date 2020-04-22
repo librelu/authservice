@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"io/ioutil"
+	"log"
 
 	"github.com/pkg/errors"
 	"golang.org/x/oauth2"
@@ -36,6 +37,7 @@ func (c *client) GetUserProfileByToken(ctx context.Context, code string) (userin
 	}
 
 	if tok == nil {
+		log.Println("current_code", code)
 		return nil, errors.Errorf("no token found")
 	}
 
