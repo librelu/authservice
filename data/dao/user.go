@@ -16,7 +16,9 @@ func (d *dao) GetUserByEmail(email string) (output *models.User, err error) {
 			Valid:  true,
 		},
 	}); db.Error != nil {
-		if !db.RecordNotFound() {
+		if db.RecordNotFound() {
+			return nil, nil
+		} else if db.RecordNotFound() {
 			return nil, db.Error
 		}
 	}
@@ -31,7 +33,9 @@ func (d *dao) GetUserByUsername(username string) (output *models.User, err error
 			Valid:  true,
 		},
 	}); db.Error != nil {
-		if !db.RecordNotFound() {
+		if db.RecordNotFound() {
+			return nil, nil
+		} else if db.RecordNotFound() {
 			return nil, db.Error
 		}
 	}
