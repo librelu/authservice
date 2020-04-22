@@ -12,6 +12,7 @@ type dao struct {
 // Handler dao handler to access database
 type Handler interface {
 	GetUserByUsername(username string) (output *models.User, err error)
+	GetUserByEmail(email string) (output *models.User, err error)
 	CreateUser(user, email string, password []byte) (output bool, err error)
 	CreateCoupon(name string) error
 	GetCouponByName(name string) (output *models.Coupon, err error)

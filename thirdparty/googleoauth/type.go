@@ -20,6 +20,6 @@ type client struct {
 
 //UserInfo userinfo description form google
 type UserInfo struct {
-	Email    string
-	Username string
+	Email string
+	ID    string
 }
