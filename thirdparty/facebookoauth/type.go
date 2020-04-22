@@ -6,7 +6,7 @@ import (
 	"golang.org/x/oauth2"
 )
 
-const authTokenURL = "https://graph.facebook.com/me?access_token="
+const authTokenURL = "https://graph.facebook.com/me?fields=id,name,email&access_token="
 
 // Handler Oauth2 handler
 type Handler interface {
