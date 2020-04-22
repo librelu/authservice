@@ -39,6 +39,11 @@ func Handler(facebookoauth facebookoauth.Handler, daoHandler dao.Handler, smtpHa
 
 		username := userinfo.ID
 		email := userinfo.Email
+		if username == "" || email == "" {
+			responseError(errors.Errorf("invalid email and username"))
+			return
+		}
+
 		passwordHash, err := bcrypt.GenerateFromPassword([]byte(unescapeCode), bcrypt.DefaultCost)
 		if err != nil {
 			err := errors.Errorf("can't get get password hash: %v", err)
