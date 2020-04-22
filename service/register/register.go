@@ -41,9 +41,7 @@ func Handler(daoHandler dao.Handler, smtpHandler smtp.Handler) (jsonHandler endp
 		}
 
 		if user, _ := daoHandler.GetUserByUsername(username); user != nil {
-			return Response{
-				"message": "user already register",
-			}, nil
+			return nil, errors.Errorf("user already register")
 		}
 
 		if ok, err := daoHandler.CreateUser(username, email, passwordHash); !ok || err != nil {
