@@ -57,7 +57,7 @@ func main() {
 		c.GetString("facebookoauth.clientid", ""),
 		c.GetString("facebookoauth.clientsecret", ""),
 		c.GetString("facebookoauth.redirecturl", ""),
-		nil,
+		c.GetStringList("facebookoauth.scopes", nil),
 	)
 
 	// Init dao

@@ -21,3 +21,5 @@ facebookoauth:
   clientid: "3043148599098072"
   clientsecret: "e1c7c45a0564e9fed4e9422090bd4579" 
   redirecturl: "https://amazingtalker.herokuapp.com/facebookoauth"
+  scopes:
+    - "email"
