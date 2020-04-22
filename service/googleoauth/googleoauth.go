@@ -2,6 +2,7 @@ package googleoauth
 
 import (
 	"net/http"
+	"net/url"
 
 	"github.com/authsvc/data/dao"
 	"github.com/authsvc/thirdparty/googleoauth"
@@ -21,7 +22,12 @@ func Handler(googleoauth googleoauth.Handler, daoHandler dao.Handler, smtpHandle
 			return
 		}
 
-		userinfo, err := googleoauth.GetUserProfileByToken(c, code)
+		unescapeCode, err := url.QueryUnescape(code)
+		if err != nil {
+			c.JSON(http.StatusBadGateway, gin.H{"error": errors.Errorf("can't unescape code: %v", err)})
+		}
+
+		userinfo, err := googleoauth.GetUserProfileByToken(c, unescapeCode)
 		if err != nil {
 			c.JSON(http.StatusBadGateway, gin.H{"error": errors.Errorf(err.Error()).Error()})
 			return
@@ -29,7 +35,7 @@ func Handler(googleoauth googleoauth.Handler, daoHandler dao.Handler, smtpHandle
 
 		username := userinfo.ID
 		email := userinfo.Email
-		passwordHash, err := bcrypt.GenerateFromPassword([]byte(code), bcrypt.DefaultCost)
+		passwordHash, err := bcrypt.GenerateFromPassword([]byte(unescapeCode), bcrypt.DefaultCost)
 		if err != nil {
 			c.JSON(http.StatusBadGateway, gin.H{"error": errors.Errorf(err.Error()).Error()})
 			return
