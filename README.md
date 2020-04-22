@@ -97,3 +97,11 @@ This server is a server providing the feature handler and gateway. Here are the 
 
 ## Oatuh
 To passing the oauth, we need to get the oauth url and the Oauth2 process is passing if the token can get the user profile. The user profile is getting from oauth provider server. When profile is invalid. The error message is responded.
+
+## How to test
+The server is using heroku:
+https://amazingtalker.herokuapp.com/
+
+You can using above above domain to end to end testing each endpoints.
+
+For example: https://amazingtalker.herokuapp.com/ping to testing the healthcheck endpoint.
