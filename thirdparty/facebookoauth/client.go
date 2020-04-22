@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"io/ioutil"
+	"log"
 
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/facebook"
@@ -47,6 +48,7 @@ func (c *client) GetUserProfileByCode(ctx context.Context, code string) (userinf
 	}
 
 	userinfo = new(UserInfo)
+	log.Println(string(v))
 	err = json.Unmarshal(v, userinfo)
 	if err != nil {
 		return nil, err
