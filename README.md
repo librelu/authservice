@@ -69,7 +69,7 @@ This server is a server providing the feature handler and gateway. Here are the 
   </td>
   </tr>
   <tr>
-    <td>Get google oauth url<td>
+    <td>Get google oauth url</td>
     <td>/get_googleoauth_url</td>
     <td>GET</td>
     <td>Get google oauth login endpoint</td>
@@ -82,7 +82,7 @@ This server is a server providing the feature handler and gateway. Here are the 
     </code></td>
   </tr>
   <tr>
-    <td>Get facebook oauth url<td>
+    <td>Get facebook oauth url</td>
     <td>/get_facebookoauth_url</td>
     <td>GET</td>
     <td>Get facebook oauth login endpoint</td>
